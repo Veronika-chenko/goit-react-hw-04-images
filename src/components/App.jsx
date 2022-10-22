@@ -1,7 +1,7 @@
 import { Component } from 'react';
-import { Searchbar } from './Searchbar/Searchbar';
+import { Searchbar } from './Searchbar';
 import { ImageGallery } from './Gallery/ImageGallery';
-import { Button } from './Button/Button';
+import { Button } from './Button';
 import { fetchImageList } from './services/Api';
 
 export class App extends Component {
@@ -53,7 +53,6 @@ export class App extends Component {
         {gallery.length !== 0 && (
           <Button currPage={pageNum} onClick={this.changeSearchPage} />
         )}
-        {/* <Button currPage={pageNum} onClick={this.changeSearchPage} /> */}
       </>
     );
   }

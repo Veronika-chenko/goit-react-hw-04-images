@@ -7,8 +7,6 @@ export class Button extends Component {
   };
 
   handleIncrement = () => {
-    console.log('спрацював handleIncrement');
-
     this.setState(prevState => ({
       pageNum: prevState.pageNum + 1,
     }));
