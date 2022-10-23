@@ -1,14 +1,23 @@
 import { Component } from 'react';
-import { Searchbar } from './Searchbar';
-import { ImageGallery } from './Gallery/ImageGallery';
-import { Button } from './Button';
 import { fetchImageList } from './services/Api';
+import { Searchbar } from './Searchbar';
+import { ImageGallery } from './ImageGallery/';
+import { Button } from './Button';
+import { Loader } from './Loader';
+import { Modal } from './Modal';
 
 export class App extends Component {
   state = {
     gallery: [],
     searchQuery: '',
     pageNum: 1,
+
+    loading: false,
+    showModal: false,
+    largeImage: '',
+
+    hitsQuantity: 0,
+    total: 0,
   };
 
   async componentDidUpdate(_, prevState) {
@@ -16,8 +25,14 @@ export class App extends Component {
 
     if (searchQuery !== prevState.searchQuery) {
       try {
+        this.setState({ pageNum: 1, loading: true });
         const data = await fetchImageList(searchQuery, pageNum);
-        this.setState({ gallery: data.hits });
+        this.setState({
+          gallery: data.hits,
+          loading: false,
+          hitsQuantity: data.hits.length,
+          total: data.totalHits,
+        });
       } catch (error) {
         console.log(error);
       }
@@ -25,9 +40,12 @@ export class App extends Component {
 
     if (pageNum !== prevState.pageNum) {
       try {
+        this.setState({ loading: true });
         const data = await fetchImageList(searchQuery, pageNum);
         this.setState(prevState => ({
           gallery: [...prevState.gallery, ...data.hits],
+          loading: false,
+          hitsQuantity: prevState.hitsQuantity + data.hits.length,
         }));
       } catch (error) {
         console.log(error);
@@ -43,42 +61,42 @@ export class App extends Component {
     this.setState({ pageNum: page + 1 });
   };
 
+  toggleModal = image => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+      largeImage: image,
+    }));
+
+    return image;
+  };
+
   render() {
-    const { gallery, pageNum } = this.state;
+    const {
+      gallery,
+      pageNum,
+      loading,
+      showModal,
+      largeImage,
+      hitsQuantity,
+      total,
+    } = this.state;
 
     return (
       <>
         <Searchbar onSubmit={this.changeSearchQuery} />
-        <ImageGallery data={gallery} />
-        {gallery.length !== 0 && (
+        <ImageGallery data={gallery} onImageClick={this.toggleModal} />
+        {loading && <Loader />}
+
+        {hitsQuantity < total && (
           <Button currPage={pageNum} onClick={this.changeSearchPage} />
+        )}
+
+        {showModal && (
+          <Modal onClose={this.toggleModal} src={largeImage}>
+            {this.state.largeImage}
+          </Modal>
         )}
       </>
     );
   }
 }
-
-// #1
-// ❌ забула прибрати, коли вставила код запиту в componentDidUpdate()
-// зациклився запит, Axios is firing off all requests simultaneously
-// Axios Request failed with status code 429
-// async componentDidUpdate(_, prevState) {
-//   if (this.state.searchQuery !== prevState) {
-//     const { searchQuery } = this.state;
-//     const QUERY_PARAMS = `&q=${searchQuery}&image_type=photo&orientation=horizontal&safesearch=true`;
-//     if (searchQuery) {❌
-//       try {
-//         const res = await axios.get(
-//           API_KEY + QUERY_PARAMS + paginationParams
-//         );
-//         this.setState({ gallery: res.data.hits });
-//       } catch (error) {
-//         console.log(error);
-//       }
-//     }
-//   }
-// }
-
-// #2
-// увага до розпилення
-// gallery: [...prevState.gallery, ...newData],

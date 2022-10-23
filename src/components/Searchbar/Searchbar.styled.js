@@ -8,13 +8,25 @@ export const SearchBox = styled.header`
     display: flex;
     justify-content: center;
     padding: 20px;
-    background-color: rgb(195, 208, 227);
-    /* box-shadow: inner rgb(0 0 0 / 5%) 0px 4px 10px; */
+    background-color: #db7093;
 `
-
 export const SearchForm = styled.form`
+    position: relative;
+`
+export const SearchButton = styled.button`
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    padding: 4px;
+    background-color: transparent;
     display: flex;
-    justify-content: center;
-    align-content: center;
-    gap: 4px;
+    align-items: center;
+
+`
+export const SearchInput = styled.input`
+    height: 20px;
+    padding: 2px 4px 2px 24px;
+    border: none;
+    border-radius: 2px;
 `

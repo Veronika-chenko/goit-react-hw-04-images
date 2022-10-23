@@ -1,16 +1,5 @@
 import styled from "styled-components";
 
-export const ImageList = styled.ul`
-    padding-top: 76px;
-    @media screen and (min-width: 768px) {
-        display: flex;
-        flex-wrap: wrap;
-        margin-left: -15px;
-    }
-
-    margin-bottom: -15px;
-`
-
 export const PhotoCard = styled.li`
 margin-bottom: 15px;
 

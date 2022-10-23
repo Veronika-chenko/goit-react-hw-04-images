@@ -1,5 +1,11 @@
 import { Component } from 'react';
-import { SearchBox, SearchForm } from './Searchbar.styled';
+import { FiSearch } from 'react-icons/fi';
+import {
+  SearchBox,
+  SearchForm,
+  SearchButton,
+  SearchInput,
+} from './Searchbar.styled';
 
 export class Searchbar extends Component {
   state = {
@@ -23,11 +29,11 @@ export class Searchbar extends Component {
     return (
       <SearchBox>
         <SearchForm onSubmit={this.handleSubmit}>
-          <button type="submit">
-            <span>Search</span>
-          </button>
+          <SearchButton type="submit">
+            <FiSearch />
+          </SearchButton>
 
-          <input
+          <SearchInput
             type="text"
             autoComplete="off"
             autoFocus
