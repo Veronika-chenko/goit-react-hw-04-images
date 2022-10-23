@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ModalBackdrop = styled.div`
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
@@ -14,9 +14,16 @@ export const ModalWrap = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     min-height: 200px;
-    max-width: 500px;
+    max-width: 300px;
     width: 100%;
-    background-color: #edf3fc;
     border-radius: 4px;
     box-shadow: 0 4px 10px #0000000d;
+
+    @media screen and (min-width: 768px) {
+        max-width: 500px;
+    }
+
+    @media screen and (min-width: 1000px) {
+        max-width: 900px
+    }
 `

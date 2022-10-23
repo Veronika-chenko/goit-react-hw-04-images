@@ -8,6 +8,7 @@ export const SearchBox = styled.header`
     display: flex;
     justify-content: center;
     padding: 20px;
+    padding: 10px;
     background-color: #db7093;
 `
 export const SearchForm = styled.form`
@@ -19,14 +20,22 @@ export const SearchButton = styled.button`
     left: 0;
     transform: translateY(-50%);
     padding: 4px;
+    width: 30px;
+    height: 30px;
     background-color: transparent;
     display: flex;
     align-items: center;
+    justify-content: center;
+    & svg {
+        width: 15px;
+        height: 15px;
+    }
 
 `
 export const SearchInput = styled.input`
-    height: 20px;
-    padding: 2px 4px 2px 24px;
+width: 300px;
+    height: 30px;
+    padding: 4px 4px 4px 30px;
     border: none;
     border-radius: 2px;
 `
