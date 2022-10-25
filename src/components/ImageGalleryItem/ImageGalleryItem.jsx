@@ -1,14 +1,14 @@
-// import { Component } from 'react';
-import { PhotoCard } from './ImageGalleryItem.styled';
 import PropTypes from 'prop-types';
+import { PhotoCard } from './ImageGalleryItem.styled';
 
 export const ImageGalleryItem = ({ el, onClick }) => {
+  const { webformatURL, largeImageURL, tags } = el;
   return (
     <PhotoCard>
       <img
-        src={el.webformatURL}
-        alt={el.tags}
-        onClick={() => onClick(el.largeImageURL)}
+        src={webformatURL}
+        alt={tags}
+        onClick={() => onClick(largeImageURL, tags)}
       />
     </PhotoCard>
   );

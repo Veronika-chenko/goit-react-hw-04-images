@@ -26,11 +26,11 @@ export class Modal extends Component {
   };
 
   render() {
-    const { src } = this.props;
+    const { src, alt } = this.props;
     return createPortal(
       <ModalBackdrop onClick={this.handleBackdropClick}>
         <ModalWrap>
-          <img src={src} alt="something beautiful" />
+          <img src={src} alt={alt} />
         </ModalWrap>
       </ModalBackdrop>,
       modalRoot

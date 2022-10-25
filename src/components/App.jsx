@@ -12,12 +12,15 @@ export class App extends Component {
     searchQuery: '',
     pageNum: 1,
 
+    hitsQuantity: 0,
+    totalHits: 0,
+
     loading: false,
     showModal: false,
-    largeImage: '',
-
-    hitsQuantity: 0,
-    total: 0,
+    modalData: {
+      src: '',
+      alt: '',
+    },
   };
 
   async componentDidUpdate(_, prevState) {
@@ -26,12 +29,12 @@ export class App extends Component {
     if (searchQuery !== prevState.searchQuery) {
       try {
         this.setState({ pageNum: 1, loading: true });
-        const data = await fetchImageList(searchQuery, pageNum);
+        const { hits, totalHits } = await fetchImageList(searchQuery, pageNum);
         this.setState({
-          gallery: data.hits,
+          gallery: hits,
           loading: false,
-          hitsQuantity: data.hits.length,
-          total: data.totalHits,
+          hitsQuantity: hits.length,
+          totalHits,
         });
       } catch (error) {
         console.log(error);
@@ -41,11 +44,11 @@ export class App extends Component {
     if (pageNum !== prevState.pageNum) {
       try {
         this.setState({ loading: true });
-        const data = await fetchImageList(searchQuery, pageNum);
+        const { hits } = await fetchImageList(searchQuery, pageNum);
         this.setState(prevState => ({
-          gallery: [...prevState.gallery, ...data.hits],
+          gallery: [...prevState.gallery, ...hits],
           loading: false,
-          hitsQuantity: prevState.hitsQuantity + data.hits.length,
+          hitsQuantity: prevState.hitsQuantity + hits.length,
         }));
       } catch (error) {
         console.log(error);
@@ -61,13 +64,14 @@ export class App extends Component {
     this.setState({ pageNum: page + 1 });
   };
 
-  toggleModal = image => {
+  toggleModal = (src, alt) => {
     this.setState(({ showModal }) => ({
       showModal: !showModal,
-      largeImage: image,
+      modalData: {
+        src,
+        alt,
+      },
     }));
-
-    return image;
   };
 
   render() {
@@ -76,10 +80,11 @@ export class App extends Component {
       pageNum,
       loading,
       showModal,
-      largeImage,
       hitsQuantity,
-      total,
+      totalHits,
+      modalData,
     } = this.state;
+    const { src, alt } = modalData;
 
     return (
       <>
@@ -87,14 +92,12 @@ export class App extends Component {
         <ImageGallery data={gallery} onImageClick={this.toggleModal} />
         {loading && <Loader />}
 
-        {hitsQuantity < total && (
+        {hitsQuantity < totalHits && (
           <Button currPage={pageNum} onClick={this.changeSearchPage} />
         )}
 
         {showModal && (
-          <Modal onClose={this.toggleModal} src={largeImage}>
-            {this.state.largeImage}
-          </Modal>
+          <Modal onClose={this.toggleModal} src={src} alt={alt}></Modal>
         )}
       </>
     );
