@@ -1,27 +1,17 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { LoadMoreButton } from './Button.styled';
 
-export class Button extends Component {
-  state = {
-    pageNum: this.props.currPage,
+export const Button = ({ currPage, onClick }) => {
+  const [page, setPage] = useState(currPage);
+
+  const handleClick = () => {
+    setPage(prevState => prevState + 1);
+    onClick(page);
   };
 
-  handleIncrement = () => {
-    this.setState(prevState => ({
-      pageNum: prevState.pageNum + 1,
-    }));
-  };
-
-  handleClick = () => {
-    this.handleIncrement();
-    this.props.onClick(this.state.pageNum);
-  };
-
-  render() {
-    return (
-      <LoadMoreButton type="button" onClick={this.handleClick}>
-        Load more
-      </LoadMoreButton>
-    );
-  }
-}
+  return (
+    <LoadMoreButton type="button" onClick={handleClick}>
+      Load more
+    </LoadMoreButton>
+  );
+};

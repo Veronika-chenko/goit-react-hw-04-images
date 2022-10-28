@@ -1,105 +1,73 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
+// import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { fetchImageList } from './services/Api';
+//
 import { Searchbar } from './Searchbar';
 import { ImageGallery } from './ImageGallery/';
 import { Button } from './Button';
 import { Loader } from './Loader';
 import { Modal } from './Modal';
+// NewApp
 
-export class App extends Component {
-  state = {
-    gallery: [],
-    searchQuery: '',
-    pageNum: 1,
+export const App = () => {
+  const [gallery, setGallery] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [pageNum, setPageNum] = useState(1);
+  const [hitsQuantity, setHitsQuantity] = useState(0);
+  const [totalHits, setTotalHits] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [srcModal, setSrcModal] = useState('');
+  const [altModal, setAltModal] = useState('');
 
-    hitsQuantity: 0,
-    totalHits: 0,
-
-    loading: false,
-    showModal: false,
-    modalData: {
-      src: '',
-      alt: '',
-    },
-  };
-
-  async componentDidUpdate(_, prevState) {
-    const { searchQuery, pageNum } = this.state;
-
-    if (searchQuery !== prevState.searchQuery) {
+  useEffect(() => {
+    if (!searchQuery) return;
+    async function fetchImageList1() {
       try {
-        this.setState({ pageNum: 1, loading: true });
+        setLoading(true);
         const { hits, totalHits } = await fetchImageList(searchQuery, pageNum);
-        this.setState({
-          gallery: hits,
-          loading: false,
-          hitsQuantity: hits.length,
-          totalHits,
-        });
+        setGallery(state => [...state, ...hits]);
+        setTotalHits(totalHits);
+        setHitsQuantity(state => state + hits.length);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
     }
+    fetchImageList1();
+  }, [pageNum, searchQuery]);
 
-    if (pageNum !== prevState.pageNum) {
-      try {
-        this.setState({ loading: true });
-        const { hits } = await fetchImageList(searchQuery, pageNum);
-        this.setState(prevState => ({
-          gallery: [...prevState.gallery, ...hits],
-          loading: false,
-          hitsQuantity: prevState.hitsQuantity + hits.length,
-        }));
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
+  const changeSearchQuery = text => {
+    setSearchQuery(text);
+    resetBeforeNewQuery();
+  };
+  const changeSearchPage = page => setPageNum(page + 1);
 
-  changeSearchQuery = text => {
-    this.setState({ searchQuery: text });
+  const toggleModal = (src, alt) => {
+    setSrcModal(src);
+    setAltModal(alt);
+    setShowModal(!showModal);
   };
 
-  changeSearchPage = page => {
-    this.setState({ pageNum: page + 1 });
+  const resetBeforeNewQuery = () => {
+    setGallery([]);
+    setPageNum(1);
+    setHitsQuantity(0);
   };
 
-  toggleModal = (src, alt) => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-      modalData: {
-        src,
-        alt,
-      },
-    }));
-  };
-
-  render() {
-    const {
-      gallery,
-      pageNum,
-      loading,
-      showModal,
-      hitsQuantity,
-      totalHits,
-      modalData,
-    } = this.state;
-    const { src, alt } = modalData;
-
-    return (
-      <>
-        <Searchbar onSubmit={this.changeSearchQuery} />
-        <ImageGallery data={gallery} onImageClick={this.toggleModal} />
-        {loading && <Loader />}
-
-        {hitsQuantity < totalHits && (
-          <Button currPage={pageNum} onClick={this.changeSearchPage} />
-        )}
-
-        {showModal && (
-          <Modal onClose={this.toggleModal} src={src} alt={alt}></Modal>
-        )}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Searchbar onSubmit={changeSearchQuery} />
+      <ImageGallery data={gallery} onImageClick={toggleModal} />
+      {loading && <Loader />}
+      {hitsQuantity < totalHits && (
+        <Button currPage={pageNum} onClick={changeSearchPage} />
+      )}
+      {showModal && (
+        <Modal onClose={toggleModal} src={srcModal} alt={altModal}></Modal>
+      )}
+      {/* <ToastContainer /> */}
+    </>
+  );
+};

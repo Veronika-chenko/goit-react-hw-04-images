@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import {
   SearchBox,
@@ -7,42 +7,32 @@ import {
   SearchInput,
 } from './Searchbar.styled';
 
-export class Searchbar extends Component {
-  state = {
-    queryName: '',
-  };
+export const Searchbar = ({ onSubmit }) => {
+  const [query, setQuery] = useState('');
 
-  handleChande = e => {
-    this.setState({ queryName: e.currentTarget.value });
-  };
+  const handleChande = e => setQuery(e.currentTarget.value);
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    if (this.state.queryName.trim() === '') {
-      return;
-    }
-    this.props.onSubmit(this.state.queryName);
+    if (query.trim() === '') return;
+    onSubmit(query);
   };
+  return (
+    <SearchBox>
+      <SearchForm onSubmit={handleSubmit}>
+        <SearchButton type="submit">
+          <FiSearch />
+        </SearchButton>
 
-  render() {
-    const { queryName } = this.state;
-    return (
-      <SearchBox>
-        <SearchForm onSubmit={this.handleSubmit}>
-          <SearchButton type="submit">
-            <FiSearch />
-          </SearchButton>
-
-          <SearchInput
-            type="text"
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            value={queryName}
-            onChange={this.handleChande}
-          />
-        </SearchForm>
-      </SearchBox>
-    );
-  }
-}
+        <SearchInput
+          type="text"
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+          value={query}
+          onChange={handleChande}
+        />
+      </SearchForm>
+    </SearchBox>
+  );
+};
