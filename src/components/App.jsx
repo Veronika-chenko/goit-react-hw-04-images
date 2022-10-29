@@ -18,7 +18,7 @@ export const App = () => {
 
   useEffect(() => {
     if (!searchQuery) return;
-    async function fetchImageList1() {
+    (async function () {
       try {
         setLoading(true);
         const { hits, totalHits } = await fetchImageList(searchQuery, pageNum);
@@ -29,8 +29,7 @@ export const App = () => {
       } catch (error) {
         console.log(error);
       }
-    }
-    fetchImageList1();
+    })();
   }, [pageNum, searchQuery]);
 
   const changeSearchQuery = text => {
