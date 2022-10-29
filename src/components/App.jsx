@@ -7,8 +7,6 @@ import { Searchbar } from './Searchbar';
 import { ImageGallery } from './ImageGallery/';
 import { Button } from './Button';
 import { Loader } from './Loader';
-import { Modal } from './Modal';
-// NewApp
 
 export const App = () => {
   const [gallery, setGallery] = useState([]);
@@ -17,9 +15,6 @@ export const App = () => {
   const [hitsQuantity, setHitsQuantity] = useState(0);
   const [totalHits, setTotalHits] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [srcModal, setSrcModal] = useState('');
-  const [altModal, setAltModal] = useState('');
 
   useEffect(() => {
     if (!searchQuery) return;
@@ -40,17 +35,12 @@ export const App = () => {
 
   const changeSearchQuery = text => {
     setSearchQuery(text);
-    resetBeforeNewQuery();
+    resetIfNewQuery();
   };
+
   const changeSearchPage = page => setPageNum(page + 1);
 
-  const toggleModal = (src, alt) => {
-    setSrcModal(src);
-    setAltModal(alt);
-    setShowModal(!showModal);
-  };
-
-  const resetBeforeNewQuery = () => {
+  const resetIfNewQuery = () => {
     setGallery([]);
     setPageNum(1);
     setHitsQuantity(0);
@@ -59,15 +49,12 @@ export const App = () => {
   return (
     <>
       <Searchbar onSubmit={changeSearchQuery} />
-      <ImageGallery data={gallery} onImageClick={toggleModal} />
+      <ImageGallery data={gallery} />
       {loading && <Loader />}
-      {hitsQuantity < totalHits && (
+      {hitsQuantity < totalHits && !loading && (
         <Button currPage={pageNum} onClick={changeSearchPage} />
       )}
-      {showModal && (
-        <Modal onClose={toggleModal} src={srcModal} alt={altModal}></Modal>
-      )}
-      {/* <ToastContainer /> */}
+      {/* <ToastContainer autoClose={2000} /> */}
     </>
   );
 };

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { LoadMoreButton } from './Button.styled';
 
 export const Button = ({ currPage, onClick }) => {
@@ -14,4 +15,9 @@ export const Button = ({ currPage, onClick }) => {
       Load more
     </LoadMoreButton>
   );
+};
+
+Button.propTypes = {
+  currPage: PropTypes.number.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
