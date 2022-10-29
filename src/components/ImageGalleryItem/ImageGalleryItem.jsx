@@ -1,18 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'components/Modal';
 import { PhotoCard } from './ImageGalleryItem.styled';
 
 export const ImageGalleryItem = ({ el }) => {
-  const { webformatURL, largeImageURL, tags } = el;
-
   const [showModal, setShowModal] = useState(false);
   const [srcModal, setSrcModal] = useState('');
   const [altModal, setAltModal] = useState('');
 
-  const toggleModal = () => {
+  const { webformatURL, largeImageURL, tags } = el;
+
+  useEffect(() => {
     setSrcModal(largeImageURL);
     setAltModal(tags);
+  }, [largeImageURL, tags]);
+
+  const toggleModal = () => {
     setShowModal(!showModal);
   };
 
