@@ -30,31 +30,41 @@ export const App = () => {
       }
     })();
   }, [pageNum, searchQuery]);
+  const notifSuccess = () =>
+    toast.success(`Hooray! We found ${totalHits} images.`);
 
-  // useEffect(() => {
-  //   if (!searchQuery) return;
+  const notifInfo = () =>
+    toast.info("We're sorry, but you've reached the end of search results.");
 
-  //   const notifSuccess = () =>
-  //     toast.success(`Hooray! We found ${totalHits} images.`);
+  const notifError = () =>
+    toast.error(
+      'Sorry, there are no images matching your search query. Please try again.'
+    );
 
-  //   const notifInfo = () =>
-  //     toast.info("We're sorry, but you've reached the end of search results.");
+  useEffect(() => {
+    if (!searchQuery) return;
 
-  //   const notifError = () =>
-  //     toast.error(
-  //       'Sorry, there are no images matching your search query. Please try again.'
-  //     );
+    // const notifSuccess = () =>
+    //   toast.success(`Hooray! We found ${totalHits} images.`);
 
-  //   if (totalHits > 0 && pageNum === 1) {
-  //     return notifSuccess();
-  //   }
-  //   if (totalHits > 0 && hitsQuantity === totalHits) {
-  //     return notifInfo();
-  //   }
-  //   if (totalHits === 0) {
-  //     return notifError();
-  //   }
-  // }, [searchQuery, pageNum, hitsQuantity, totalHits]);
+    // const notifInfo = () =>
+    //   toast.info("We're sorry, but you've reached the end of search results.");
+
+    // const notifError = () =>
+    //   toast.error(
+    //     'Sorry, there are no images matching your search query. Please try again.'
+    //   );
+
+    if (totalHits > 0 && pageNum === 1) {
+      notifSuccess();
+    }
+    if (totalHits > 0 && hitsQuantity === totalHits) {
+      notifInfo();
+    }
+    if (hitsQuantity === 0) {
+      notifError();
+    }
+  }, [searchQuery, pageNum, hitsQuantity, totalHits]);
 
   const changeSearchQuery = text => {
     if (text.trim() === searchQuery) return;
