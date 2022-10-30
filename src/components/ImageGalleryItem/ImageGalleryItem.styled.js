@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const PhotoCard = styled.li`
+export const ImageCard = styled.li`
 margin-bottom: 15px;
     @media screen and (min-width: 360px) {
         height: 364px;

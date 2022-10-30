@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'components/Modal';
-import { PhotoCard } from './ImageGalleryItem.styled';
+import { ImageCard } from './ImageGalleryItem.styled';
 
 export const ImageGalleryItem = ({ el }) => {
   const [showModal, setShowModal] = useState(false);
@@ -20,12 +20,12 @@ export const ImageGalleryItem = ({ el }) => {
   };
 
   return (
-    <PhotoCard>
+    <ImageCard>
       <img src={webformatURL} alt={tags} onClick={toggleModal} />
       {showModal && (
         <Modal onClose={toggleModal} src={srcModal} alt={altModal}></Modal>
       )}
-    </PhotoCard>
+    </ImageCard>
   );
 };
 
