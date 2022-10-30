@@ -51,6 +51,7 @@ export const App = () => {
   }, [searchQuery, pageNum, hitsQuantity, totalHits]);
 
   const changeSearchQuery = text => {
+    if (text === searchQuery) return;
     setSearchQuery(text);
     resetIfNewQuery();
   };
