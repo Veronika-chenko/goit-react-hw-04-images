@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { FiSearch } from 'react-icons/fi';
 import {
   SearchBox,
@@ -8,15 +8,13 @@ import {
 } from './Searchbar.styled';
 
 export const Searchbar = ({ onSubmit }) => {
-  const [query, setQuery] = useState('');
-
-  const handleChande = e => setQuery(e.currentTarget.value);
-
   const handleSubmit = e => {
     e.preventDefault();
+    const query = e.target.elements.searchQuery.value;
     if (query.trim() === '') return;
     onSubmit(query);
   };
+
   return (
     <SearchBox>
       <SearchForm onSubmit={handleSubmit}>
@@ -26,13 +24,16 @@ export const Searchbar = ({ onSubmit }) => {
 
         <SearchInput
           type="text"
+          name="searchQuery"
           autoComplete="off"
           autoFocus
           placeholder="Search images and photos"
-          value={query}
-          onChange={handleChande}
         />
       </SearchForm>
     </SearchBox>
   );
+};
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
 };

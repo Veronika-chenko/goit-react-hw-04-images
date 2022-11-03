@@ -2,16 +2,16 @@ import PropTypes from 'prop-types';
 import { ImageGalleryItem } from 'components/ImageGalleryItem';
 import { ImageList } from './ImageGallery.styled';
 
-export const ImageGallery = ({ data }) => {
+export const ImageGallery = ({ galleryList }) => {
   return (
     <ImageList>
-      {data.map(el => (
-        <ImageGalleryItem key={el.id} el={el} />
+      {galleryList.map(item => (
+        <ImageGalleryItem key={item.id} item={item} />
       ))}
     </ImageList>
   );
 };
 
 ImageGallery.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  galleryList: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

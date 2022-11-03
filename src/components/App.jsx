@@ -73,7 +73,7 @@ export const App = () => {
   return (
     <>
       <Searchbar onSubmit={changeSearchQuery} />
-      <ImageGallery data={gallery} />
+      <ImageGallery galleryList={gallery} />
       {loading && <Loader />}
       {hitsQuantity < totalHits && !loading && (
         <Button currPage={pageNum} onClick={changeSearchPage} />

@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { Modal } from 'components/Modal';
 import { ImageCard } from './ImageGalleryItem.styled';
 
-export const ImageGalleryItem = ({ el }) => {
+export const ImageGalleryItem = ({ item }) => {
   const [showModal, setShowModal] = useState(false);
   const [srcModal, setSrcModal] = useState('');
   const [altModal, setAltModal] = useState('');
 
-  const { webformatURL, largeImageURL, tags } = el;
+  const { webformatURL, largeImageURL, tags } = item;
 
   useEffect(() => {
     setSrcModal(largeImageURL);
@@ -30,5 +30,5 @@ export const ImageGalleryItem = ({ el }) => {
 };
 
 ImageGalleryItem.propTypes = {
-  el: PropTypes.object.isRequired,
+  item: PropTypes.object.isRequired,
 };
