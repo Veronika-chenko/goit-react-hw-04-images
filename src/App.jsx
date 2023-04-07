@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 // import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { fetchImageList } from './services/Api';
-import { Searchbar } from './Searchbar';
-import { ImageGallery } from './ImageGallery/';
-import { Button } from './Button';
-import { Loader } from './Loader';
+import { Searchbar } from './components/Searchbar';
+import { ImageGallery } from './components/ImageGallery';
+import { Button } from './components/Button';
+import { Loader } from './components/Loader';
 
 export const App = () => {
   const [gallery, setGallery] = useState([]);
